@@ -4,7 +4,7 @@
 	<statements>
 		<select id="SelectSomething">
 			SELECT 
-				<include refid="Persistence1.sql1" /> 
+				<include refid="Persistence1.sql1" />, <include refid="Persistence1.sql1" />
 			FROM someTable
 		</select>
 	</statements>
