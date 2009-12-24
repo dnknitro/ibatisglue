@@ -12,5 +12,8 @@
 		<sql id="sql1">
 			SomeColumn1, SomeColumn2
 		</sql>
+		<sql id="sql2">
+			SomeColumn3, SomeColumn4
+		</sql>
 	</statements>
 </sqlMap>
