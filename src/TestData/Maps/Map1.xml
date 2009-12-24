@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<sqlMap namespace="Persistence1" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<resultMaps>
+		<resultMap id="SomeClass-results" class="SomeClass">
+			<result property="SomeProperty1" column="SomeColumn1" nullValue="" />
+			<result property="SomeProperty2" column="SomeColumn2" />
+		</resultMap>
+	</resultMaps>
+
+	<statements>
+		<sql id="sql1">
+			SomeColumn1, SomeColumn2
+		</sql>
+	</statements>
+</sqlMap>

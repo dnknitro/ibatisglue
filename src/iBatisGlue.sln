@@ -3,6 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iBatisGlue.ConsoleApp", "iBatisGlue.ConsoleApp\iBatisGlue.ConsoleApp.csproj", "{AC3998DE-7D6C-45EF-A2B1-623F401E056D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{F2C3690B-AE25-44EA-A1EB-67C0CB31913B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{8B9074CD-721B-41DC-A63A-E2154825AD81}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\Maps\Map1.xml = TestData\Maps\Map1.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{5EDB5AF7-9F15-46B4-B464-C8BD43E2995D}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\Configs\SqlMap.config = TestData\Configs\SqlMap.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Namespace3", "Namespace3", "{91EEA065-D87A-4F42-AB8B-0350BB54EBB6}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\Maps\Namespace3\Map2.xml = TestData\Maps\Namespace3\Map2.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,5 +33,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B9074CD-721B-41DC-A63A-E2154825AD81} = {F2C3690B-AE25-44EA-A1EB-67C0CB31913B}
+		{5EDB5AF7-9F15-46B4-B464-C8BD43E2995D} = {F2C3690B-AE25-44EA-A1EB-67C0CB31913B}
+		{91EEA065-D87A-4F42-AB8B-0350BB54EBB6} = {8B9074CD-721B-41DC-A63A-E2154825AD81}
 	EndGlobalSection
 EndGlobal
