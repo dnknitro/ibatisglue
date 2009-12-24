@@ -42,7 +42,7 @@ namespace iBatisGlue.ConsoleApp
 				{
 					var chunks = fileNode.Value.Split(',')[0].Split('.');
 					var filename = string.Format("{0}.{1}", chunks[chunks.Length - 2], chunks[chunks.Length - 1]);
-					filenameOnlyList.Add(filename);
+					filenameOnlyList.Add(filename.ToUpper());
 				}
 			}
 
@@ -51,10 +51,11 @@ namespace iBatisGlue.ConsoleApp
 			{
 				var basePath = (args.Length > 2) ? args[2] : iBatisGlueUtils.iBatisMapFilesBasePath;
 				var files = Directory.GetFiles(basePath, "*", SearchOption.AllDirectories);
+
 				foreach (var filenameAndPath in files)
 				{
 					var fileInfo = new FileInfo(filenameAndPath);
-					if (filenameOnlyList.Contains(fileInfo.Name))
+					if (filenameOnlyList.Contains(fileInfo.Name.ToUpper()))
 					{
 						fileMapList.Add(fileInfo.FullName);
 					}
