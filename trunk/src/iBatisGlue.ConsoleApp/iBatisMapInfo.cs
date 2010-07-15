@@ -27,6 +27,7 @@ namespace iBatisGlue.Common
 			foreach (XmlNode node in statementNodes)
 			{
 				var statement = iBatisStatement.ParseNode(node, namespacee);
+				if(statement == null) continue;
 				mapInfo.StatementList.Add(statement);
 			}
 			// ReSharper restore PossibleNullReferenceException
