@@ -33,6 +33,7 @@ namespace iBatisGlue.Common
 
 		public static iBatisStatement ParseNode(XmlNode node, string namespacee)
 		{
+			if (node.Attributes["id"] == null) return null;
 			var statement = new iBatisStatement
 			                	{
 			                		StatementType = (iBatisStatementType) Enum.Parse(typeof (iBatisStatementType), node.Name, true),
@@ -99,6 +100,7 @@ namespace iBatisGlue.Common
 							reProcess = true;
 							break;
 						}
+						//NOTE: currently sub-includes are not supported
 						var regex = string.Format("<include\\s+refid=\"{0}\".*?/>", include);
 						statement.Result = Regex.Replace(statement.Result, regex, Environment.NewLine + statement1.Result);
 					}
