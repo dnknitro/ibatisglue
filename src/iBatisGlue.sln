@@ -1,8 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iBatisGlue.ConsoleApp", "iBatisGlue.ConsoleApp\iBatisGlue.ConsoleApp.csproj", "{AC3998DE-7D6C-45EF-A2B1-623F401E056D}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{F2C3690B-AE25-44EA-A1EB-67C0CB31913B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{8B9074CD-721B-41DC-A63A-E2154825AD81}"
@@ -19,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Namespace3", "Namespace3", 
 	ProjectSection(SolutionItems) = preProject
 		TestData\Maps\Namespace3\Map2.xml = TestData\Maps\Namespace3\Map2.xml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iBatisGlue", "iBatisGlue\iBatisGlue.csproj", "{AC3998DE-7D6C-45EF-A2B1-623F401E056D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

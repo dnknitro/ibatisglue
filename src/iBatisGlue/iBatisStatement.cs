@@ -11,7 +11,8 @@ namespace iBatisGlue.Common
 		Select,
 		Insert,
 		Update,
-		Delete
+		Delete,
+		Statement
 	}
 
 	internal class iBatisStatement
