@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml;
-using iBatisGlue.Common;
 
-namespace iBatisGlue.ConsoleApp
+namespace iBatisGlue
 {
-	internal class Program
+	internal class iBatisGlueProgram
 	{
-		private static void Main(string[] args)
+		[STAThread]
+		static void Main(string[] args)
 		{
-			if (args.Length < 1)
+			if(args.Length < 1)
 			{
 				Console.WriteLine(string.Format(@"iBatisGlue [Version {0}]", Assembly.GetExecutingAssembly().GetName().Version));
 				Console.WriteLine(@"(C) Copyright 2009-2010 Volodymyr Shcherbyna");
@@ -29,7 +30,7 @@ namespace iBatisGlue.ConsoleApp
 			// ReSharper disable PossibleNullReferenceException
 			var fileNodes = doc.DocumentElement.SelectNodes("/dm:sqlMapConfig/dm:sqlMaps/dm:sqlMap/@embedded", nsmgr);
 			// ReSharper restore PossibleNullReferenceException
-			if (fileNodes == null)
+			if(fileNodes == null)
 			{
 				Console.WriteLine("zero filename nodes found");
 				return;
@@ -38,7 +39,7 @@ namespace iBatisGlue.ConsoleApp
 
 			var filenameOnlyList = new List<string>();
 			{
-				foreach (XmlNode fileNode in fileNodes)
+				foreach(XmlNode fileNode in fileNodes)
 				{
 					var chunks = fileNode.Value.Split(',')[0].Split('.');
 					var filename = string.Format("{0}.{1}", chunks[chunks.Length - 2], chunks[chunks.Length - 1]);
@@ -52,28 +53,30 @@ namespace iBatisGlue.ConsoleApp
 				var basePath = (args.Length > 2) ? args[2] : iBatisGlueUtils.iBatisMapFilesBasePath;
 				var files = Directory.GetFiles(basePath, "*", SearchOption.AllDirectories);
 
-				foreach (var filenameAndPath in files)
+				foreach(var filenameAndPath in files)
 				{
 					var fileInfo = new FileInfo(filenameAndPath);
-					if (filenameOnlyList.Contains(fileInfo.Name.ToUpper()))
+					if(filenameOnlyList.Contains(fileInfo.Name.ToUpper()))
 					{
 						fileMapList.Add(fileInfo.FullName);
 					}
 				}
 			}
 
-			iBatisStatement.ProcessStatementList(fileMapList);
+			var result = Parser.ProcessStatementList(fileMapList, args[0]);
 
-			foreach (var pair in iBatisStatement.Statements)
+			if(result.Length > 0)
 			{
-				if (pair.Key.EndsWith("." + args[0]))
+				if(iBatisGlueUtils.CopyToClipboard)
 				{
-					Console.Write(pair.Value.Result);
-					return;
+					Clipboard.SetDataObject(result, true);
 				}
+				Console.Write(result);
 			}
-
-			Console.WriteLine(string.Format("{0} was not found in the map list", args[0]));
+			else
+			{
+				Console.WriteLine(string.Format("{0} was not found in the map list", args[0]));
+			}
 		}
 	}
 }

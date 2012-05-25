@@ -57,6 +57,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -68,9 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="iBatisGlueUtils.cs" />
-    <Compile Include="iBatisMapInfo.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="iBatisStatement.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="iBatisGlueProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
