@@ -2,3 +2,6 @@ src/iBatisGlue/bin
 src/iBatisGlue/obj
 *.user
 src/.vs
+src/iBatisGlue.Test/bin
+src/packages
+src/iBatisGlue.Test/obj
