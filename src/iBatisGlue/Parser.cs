@@ -50,7 +50,7 @@ namespace iBatisGlue
 				foreach(XmlNode include in includes)
 				{
 					var id = include.Attributes["refid"].Value;
-					if(id.Contains(".")) throw new InvalidOperationException(id);
+					if(id.Contains(".")) throw new InvalidOperationException($"Invalid refid '{id}'");
 					if(!statement.Includes.ContainsKey(id))
 					{
 						statement.Includes.Add(id, null);
