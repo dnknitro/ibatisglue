@@ -1,3 +1,4 @@
 src/iBatisGlue/bin
 src/iBatisGlue/obj
 *.user
+src/.vs

@@ -6,6 +6,10 @@
 			<result property="SomeProperty1" column="SomeColumn1" nullValue="" />
 			<result property="SomeProperty2" column="SomeColumn2" />
 		</resultMap>
+
+		<resultMap id="SomeChildClass-results" class="SomeChildClass" extends="Persistence1.SomeClass-results">
+			<result property="SomeChildProperty3" column="SomeChildColumn3" />
+		</resultMap>
 	</resultMaps>
 
 	<statements>

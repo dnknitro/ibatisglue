@@ -1,6 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 
 <sqlMap namespace="Persistence1.Persistence2" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<resultMaps>
+		<resultMap id="RequestCommon-results" class="RequestInfo">
+			<result property="ID" column="OrderID" />
+			<result property="LastStateUpdate" column="LastStateUpdate" />
+			<result property="Account.BusinessTypeID" column="AccountBusinessTypeID"/>
+			<result property="Account.IsPresumptiveTestOrderAllowed" column="AccountIsPresumptiveTestOrderAllowed"/>
+			<result property="Account.DoNotCall" column="DoNotCall" />
+			<result property="Account.IsPriorityAccount" column="IsPriorityAccount" />
+			<result property="OrderDocumentsSavedCount" column="OrderId" select="SelectSomething" />
+		</resultMap>
+		
+		<resultMap id="RequestInfo-results" extends="RequestCommon-results" class="RequestInfo">
+			<result property="UpdateTime" column="UpdateDateTime" />
+			<result property="OrderState" resultMapping="Persistence1.Persistence2.RequestWC-results" />
+		</resultMap>
+
+		<resultMap id="RequestInfoWC-results" extends="RequestInfo-results" class="RequestInfo">
+			<result property="RequestWC" resultMapping="Persistence1.Persistence2.RequestWC-results" />
+			<result property="FirstDateReported" column="FirstDateReported" />
+		</resultMap>
+		
+		<resultMap id="RequestWC-results" class="RequestWC">
+			<result property="OrderID" column="OrderID" />
+			<result property="WCClaimNumber" column="WCClaimNumber" />
+			<result property="Payor" resultMapping="Persistence1.Persistence2.RequestWC_XXX-results" />
+		</resultMap>
+
+		<resultMap id="RequestWC_XXX-results" class="RequestWC">
+			<result property="OrderID" column="OrderID" />
+			<result property="IsSkipped" column="WCIsSkipped" />
+			<result property="IsProcessed" column="WCIsProcessed" />
+		</resultMap>
+	</resultMaps>
 	<statements>
 		<select id="SelectSomething">
 			SELECT 
