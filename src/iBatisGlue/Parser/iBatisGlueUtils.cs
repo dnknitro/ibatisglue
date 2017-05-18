@@ -89,6 +89,7 @@ namespace iBatisGlue.Parser
 			File.WriteAllText(file, sql);
 
 			var processInfo = new ProcessStartInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SqlFormatter.exe"), file);
+			processInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			var process = Process.Start(processInfo);
 			process.WaitForExit(5000);
 			return File.ReadAllText(file);
