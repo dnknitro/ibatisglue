@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Xml;
 
@@ -80,6 +81,17 @@ namespace iBatisGlue.Parser
 				}
 			}
 			return fileMapList;
+		}
+
+		public static string FormatSQL( string sql )
+		{
+			var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "sql.sql");
+			File.WriteAllText(file, sql);
+
+			var processInfo = new ProcessStartInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SqlFormatter.exe"), file);
+			var process = Process.Start(processInfo);
+			process.WaitForExit(5000);
+			return File.ReadAllText(file);
 		}
 	}
 }

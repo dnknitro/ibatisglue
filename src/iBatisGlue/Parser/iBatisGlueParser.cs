@@ -60,30 +60,6 @@ namespace iBatisGlue.Parser
 				Node = node,
 			};
 
-			var nsmgr = new XmlNamespaceManager(node.OwnerDocument.NameTable);
-			nsmgr.AddNamespace("d", iBatisGlueUtils.XML_MAPPING_NS);
-
-			var includes = node.SelectNodes(".//d:include[@refid]", nsmgr);
-			if (includes != null && includes.Count > 0)
-			{
-				foreach (XmlNode include in includes)
-				{
-					var refid = GetFullID(statement, include.Attributes["refid"].Value);
-					//var match = Regex.Match(refid, @"^(.+)?\.(.+)$");
-					//string idNamespace = null;
-					//if (match.Groups[1].Success)
-					//{
-					//	idNamespace = match.Groups[1].Value;
-					//}
-					//var id = match.Groups[2].Value;
-					//if(id.Contains(".")) throw new InvalidOperationException($"Invalid refid '{id}'");
-					if (!statement.Includes.ContainsKey(refid))
-					{
-						statement.Includes.Add(refid, null);
-					}
-				}
-			}
-
 			return statement;
 		}
 
@@ -101,9 +77,6 @@ namespace iBatisGlue.Parser
 			var extends = node.Attributes["extends"];
 			if (extends != null)
 				resultMap.ExtendsResultMap = extends.Value;
-
-			var nsmgr = new XmlNamespaceManager(node.OwnerDocument.NameTable);
-			nsmgr.AddNamespace("d", iBatisGlueUtils.XML_MAPPING_NS);
 
 			return resultMap;
 		}
@@ -125,7 +98,7 @@ namespace iBatisGlue.Parser
 			if (statement != null)
 			{
 				ProcessStatement(statement);
-				return statement.Result.ToString();
+				return iBatisGlueUtils.FormatSQL(statement.Result.ToString());
 			}
 
 			var resultMap = ResultMaps.Values.SingleOrDefault(x => x.ID == toFind);
@@ -141,21 +114,35 @@ namespace iBatisGlue.Parser
 		private static void ProcessStatement(iBatisStatement statement)
 		{
 			if (statement.IsProcessed) return;
+
 			var result = $"/*{statement.FullID}*/{Environment.NewLine}{statement.Node.InnerXml}";
-			foreach (var include in statement.Includes.Keys.ToList())
-			{
-				if(!Statements.ContainsKey(include))
-					throw new KeyNotFoundException($"'{include}' key no found in Statements");
-				statement.Includes[include] = Statements[include];
-				ProcessStatement(statement.Includes[include]);
-			}
-			foreach (var pair in statement.Includes)
-			{
-				var regex = string.Format("<include\\s+refid=\"{0}\".*?/>", pair.Key);
-				result = Regex.Replace(result, regex, Environment.NewLine + pair.Value.Result);
-			}
 			result = result.Replace(iBatisGlueUtils.XML_TO_REMOVE1, string.Empty);
 			result = _fixTags.Replace(result, "$1$2>\r\n$1<$3");
+			
+			var nsmgr = new XmlNamespaceManager(statement.Node.OwnerDocument.NameTable);
+			nsmgr.AddNamespace("d", iBatisGlueUtils.XML_MAPPING_NS);
+
+			var includes = statement.Node.SelectNodes(".//d:include[@refid]", nsmgr);
+			if (includes != null && includes.Count > 0)
+			{
+				foreach (XmlNode include in includes)
+				{
+					var refid = include.Attributes["refid"].Value;
+					var fullRefID = GetFullID(statement, refid);
+
+					if(!Statements.ContainsKey(fullRefID))
+						throw new KeyNotFoundException($"'{include}' key no found in Statements");
+					var includeStatement = Statements[fullRefID];
+
+					ProcessStatement(includeStatement);
+
+					var regex = $"<include\\s+refid=\"{Regex.Escape(refid)}\".*?/>";
+					result = Regex.Replace(result, regex, Environment.NewLine + includeStatement.Result);
+				}
+			}
+
+			result = Regex.Replace(result, "(?<!\\/\\*)(<\\/?[A-z]{3,}?.*?\\/?>)", "/*$1*/", RegexOptions.Singleline);
+			result = Regex.Replace(result, "<!\\[CDATA\\[(.*?)\\]\\]>", "$1", RegexOptions.Singleline);
 
 			statement.Result = new StringBuilder(result);
 			statement.IsProcessed = true;

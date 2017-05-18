@@ -15,6 +15,6 @@ namespace iBatisGlue.Domain
 	public class iBatisStatement : iBatisElementIDBase
 	{
 		public iBatisStatementType StatementType { get; set; }
-		public readonly Dictionary<string, iBatisStatement> Includes = new Dictionary<string, iBatisStatement>();
+		//public readonly Dictionary<string, iBatisStatement> Includes = new Dictionary<string, iBatisStatement>();
 	}
 }
