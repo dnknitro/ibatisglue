@@ -128,11 +128,13 @@ namespace iBatisGlue.Parser
 				foreach (XmlNode include in includes)
 				{
 					var refid = include.Attributes["refid"].Value;
-					var fullRefID = GetFullID(statement, refid);
 
-					if(!Statements.ContainsKey(fullRefID))
-						throw new KeyNotFoundException($"'{include}' key no found in Statements");
-					var includeStatement = Statements[fullRefID];
+					if(refid.Contains("."))
+						throw new ArgumentException("refid should not contain namespace");
+					Func<KeyValuePair<string, iBatisStatement>, bool> filter = x => x.Key.EndsWith($".{refid}");
+					if(!Statements.Any(filter))
+						throw new KeyNotFoundException($"'{refid}' key no found in Statements (@ {statement.FullID})");
+					var includeStatement = Statements.Single(filter).Value;
 
 					ProcessStatement(includeStatement);
 
@@ -145,6 +147,7 @@ namespace iBatisGlue.Parser
 			result = Regex.Replace(result, "<!\\[CDATA\\[(.*?)\\]\\]>", "$1", RegexOptions.Singleline);
 
 			statement.Result = new StringBuilder(result);
+			statement.Result.Append($"/*END OF {statement.FullID}*/");
 			statement.IsProcessed = true;
 		}
 
